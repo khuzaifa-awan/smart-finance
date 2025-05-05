@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/* Custom global styles */
+
+html,
+body {
+  @apply h-full bg-blue-50 text-gray-800 antialiased;
+  font-family: "Inter", sans-serif;
+}
+
+button {
+  @apply transition-colors duration-200;
+}
+
+input {
+  @apply transition-all duration-150;
+}
+
+hr {
+  @apply my-6 border-t border-gray-300;
+}
+
+/* Smooth scrolling and focus outlines */
+:focus {
+  outline: none;
+  @apply ring-2 ring-blue-300;
+}
+
+/* Scrollbar styling (optional) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #93c5fd;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Add these at the end of your globals.css file */
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px #ef4444, 0 0 10px #ef4444, 0 0 15px #ef4444;
+  }
+  50% {
+    box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444;
+  }
+}
+
+.animate-glow {
+  animation: glow 2s infinite;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Add these new animations */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(80px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(80px) rotate(-360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-orbit-1 {
+  animation: orbit 10s linear infinite;
+}
+
+.animate-orbit-2 {
+  animation: orbit 10s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.animate-orbit-3 {
+  animation: orbit 10s linear infinite;
+  animation-delay: 5s;
+}
+
+.animate-orbit-4 {
+  animation: orbit 10s linear infinite;
+  animation-delay: 7.5s;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
