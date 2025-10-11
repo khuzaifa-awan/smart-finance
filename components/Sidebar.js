@@ -2,7 +2,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { AiOutlineHome, AiOutlineLogout } from "react-icons/ai";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { IoAddCircleOutline } from "react-icons/io5";
+import { IoAddCircleOutline, IoAnalytics } from "react-icons/io5";
 
 export default function Sidebar() {
   return (
@@ -26,6 +26,12 @@ export default function Sidebar() {
           <div className="flex items-center space-x-3 p-3 rounded hover:bg-blue-800 transition cursor-pointer">
             <IoAddCircleOutline size={24} />
             <span>Add Details</span>
+          </div>
+        </Link>
+        <Link href="/fundamentalAnalysis">
+          <div className="flex items-center space-x-3 p-3 rounded hover:bg-blue-800 transition cursor-pointer">
+            <IoAnalytics size={24} />
+            <span>Fundamental Analysis</span>
           </div>
         </Link>
 
