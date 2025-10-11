@@ -28,6 +28,14 @@ export default function Sidebar() {
             <span>Add Details</span>
           </div>
         </Link>
+        <Link href="/goalbased">
+          <div className="flex items-center space-x-3 p-3 rounded hover:bg-blue-800 transition cursor-pointer">
+            <IoAddCircleOutline size={24} />
+            <span>Create Goal</span>
+          </div>
+        </Link>
+
+        
 
         <button
           onClick={() => signOut()}
