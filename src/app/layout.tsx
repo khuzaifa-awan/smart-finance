@@ -1,6 +1,6 @@
 // app/layout.tsx
-// import "./globals.css";
-import '../../styles/global.css'
+import "./globals.css";
+// import '../../styles/global.css'
 import { Inter } from "next/font/google";
 import NextAuthProvider from "./NextAuthProvider";
 
