@@ -1,8 +1,9 @@
 // app/layout.tsx
 import "./globals.css";
-// import '../../styles/globals.css'
+// import '../../styles/global.css'
 import { Inter } from "next/font/google";
 import NextAuthProvider from "./NextAuthProvider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

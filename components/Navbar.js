@@ -29,7 +29,7 @@ const Navbar = ({ onLoginClick }) => {
           {/* Right: Navigation Links */}
           <div className="flex items-center space-x-8">
             <a
-              href="#hero"
+              onClick={onLoginClick}
               className="hover:text-blue-300 transition-colors scroll-smooth"
             >
               Home
