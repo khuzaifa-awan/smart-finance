@@ -41,8 +41,6 @@ export default function Sidebar() {
           </div>
         </Link>
 
-        
-
         <button
           onClick={() => signOut()}
           className="flex items-center space-x-3 p-3 rounded hover:bg-blue-800 transition cursor-pointer text-left w-full"

@@ -8,7 +8,7 @@ export default function BudgetLimitComponent({ session }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [limit, setLimit] = useState("");
   const [period, setPeriod] = useState("monthly");
-  const [budgetLimits, setBudgetLimits] = useState({});
+  const [, setBudgetLimits] = useState({});
   const [showPreferences, setShowPreferences] = useState(false);
   const [preferences, setPreferences] = useState(null);
   const [recommendations, setRecommendations] = useState(null);

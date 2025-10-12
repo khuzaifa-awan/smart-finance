@@ -12,6 +12,14 @@ const UserPreferencesSchema = new mongoose.Schema({
   monthlyFixedExpenses: Number,
   savingsGoal: Number,
   monthlyBudget: Number,
+  age: Number,
+  desiredSavingsPercentage: Number,
+  cityTier: {
+    type: String,
+    enum: ["Tier 1", "Tier 2", "Tier 3"],
+  },
+  occupation: String,
+  education: String,
   budgetSource: {
     type: String,
     enum: ["AI_GENERATED", "USER_SET"],
