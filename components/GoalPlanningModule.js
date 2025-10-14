@@ -45,14 +45,6 @@ export default function GoalPlanningModule() {
         setGoals(goals || []);
       } catch (error) {
         console.error("Error fetching goals:", error);
-        setNotifications([
-          {
-            id: Date.now(),
-            message: "Failed to load goals. Please refresh the page.",
-            type: "error",
-            date: new Date().toLocaleDateString(),
-          },
-        ]);
       } finally {
         setIsFetchingGoals(false);
       }

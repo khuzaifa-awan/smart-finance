@@ -19,7 +19,7 @@ const goalContributionSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["Auto-Debit", "Cash Deposit", "Credit Card"],
+      enum: ["Auto-Debit", "Cash Deposit", "Credit Card", "Bank Transfer"],
       required: true,
     },
     transactionId: {

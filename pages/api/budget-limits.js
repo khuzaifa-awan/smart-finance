@@ -18,6 +18,7 @@ export default async function handler(req, res) {
       const limits = await BudgetLimit.find({ userId });
       return res.status(200).json(limits);
     } catch (error) {
+      console.error("Error fetching budget limits: ", error);
       return res.status(500).json({ message: "Error fetching budget limits" });
     }
   }
@@ -50,6 +51,7 @@ export default async function handler(req, res) {
 
       return res.status(201).json(newLimit);
     } catch (error) {
+      console.error("Error setting budget limit: ", error);
       return res.status(500).json({ message: "Error setting budget limit" });
     }
   }
