@@ -3,10 +3,96 @@ import PropTypes from "prop-types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
+import { useEffect, useState } from "react";
+import { cn } from "../ui/utils";
 
 export function OverviewTab({ stock }) {
-  const confidenceScore = 85;
-  const aiSummary = `${stock.companyName} shows strong earnings performance with solid fundamentals. Current valuation appears undervalued compared to industry peers, presenting a potential buying opportunity. The company maintains healthy cash flows and competitive positioning in the ${stock.sector.toLowerCase()} sector.`;
+  const [aiInsights, setAiInsights] = useState(null);
+  const [isLoadingInsights, setIsLoadingInsights] = useState(false);
+
+  const [snapshots, setSnapShots] = useState({
+    dayChange: 0,
+    weekChange: 0,
+    monthChange: 0,
+    qtyChange: 0,
+  });
+
+  const [indicators, setIndicators] = useState({
+    rsi: 0,
+    macd: "NEUTRAL",
+    fiftyTwoWeekLow: 0,
+    fiftyTwoWeekHigh: 0,
+  });
+
+  useEffect(() => {
+    setAiInsights(null);
+  }, [stock]);
+
+  useEffect(() => {
+    const fetchStockSnapshots = async () => {
+      try {
+        const response = await fetch(
+          `/api/stocks/overview?ticker=${stock.symbol}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch stock snapshots");
+        }
+
+        const { data } = await response.json();
+        setSnapShots(data);
+      } catch (error) {
+        console.error("Error fetching stock snapshots:", error);
+      }
+    };
+
+    fetchStockSnapshots();
+  }, [stock]);
+
+  useEffect(() => {
+    const fetchStockIndicators = async () => {
+      try {
+        const response = await fetch(
+          `/api/stocks/indicators?ticker=${stock.symbol}`
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch stock indicators");
+        }
+
+        const { data } = await response.json();
+        setIndicators(data);
+      } catch (error) {
+        console.error("Error fetching stock indicators:", error);
+      }
+    };
+
+    fetchStockIndicators();
+  }, [stock]);
+
+  const generateAiInsights = async () => {
+    setIsLoadingInsights(true);
+    try {
+      const response = await fetch("/api/stocks/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ticker: stock.symbol }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to get AI insights");
+      }
+
+      const { data } = await response.json();
+      setAiInsights(data);
+    } catch (error) {
+      console.error("Error generating ai insights", error);
+    } finally {
+      setIsLoadingInsights(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -16,36 +102,102 @@ export function OverviewTab({ stock }) {
           <CardTitle className="flex items-center space-x-2">
             <Brain className="h-5 w-5 text-blue-600" />
             <span>AI Investment Summary</span>
-            <Badge variant="secondary" className="ml-auto">
-              {confidenceScore}% Confidence
-            </Badge>
+            {aiInsights && (
+              <Badge variant="secondary" className="ml-auto">
+                {aiInsights?.confidence}% Confidence
+              </Badge>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm leading-relaxed">{aiSummary}</p>
-          
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">AI Confidence Score</span>
-              <span className="font-medium">{confidenceScore}%</span>
+          {!aiInsights ? (
+            <div className="flex flex-col items-center justify-center py-8 space-y-4">
+              <Brain className="h-12 w-12 text-blue-600 opacity-50" />
+              <p className="text-sm text-muted-foreground text-center">
+                Generate AI-powered insights and recommendations for this stock
+              </p>
+              <button
+                onClick={generateAiInsights}
+                disabled={isLoadingInsights}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLoadingInsights ? (
+                  <span className="flex items-center space-x-2">
+                    <svg
+                      className="animate-spin h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Analyzing...</span>
+                  </span>
+                ) : (
+                  "Generate AI Insights"
+                )}
+              </button>
             </div>
-            <Progress value={confidenceScore} className="h-2" />
-          </div>
-          
-          <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-            <div className="text-center">
-              <div className="text-lg font-medium text-green-600">Buy</div>
-              <p className="text-xs text-muted-foreground">Recommendation</p>
-            </div>
-            <div className="text-center">
-              <div className="text-lg font-medium">PKR 280</div>
-              <p className="text-xs text-muted-foreground">Target Price</p>
-            </div>
-            <div className="text-center">
-              <div className="text-lg font-medium text-green-600">+9.6%</div>
-              <p className="text-xs text-muted-foreground">Upside Potential</p>
-            </div>
-          </div>
+          ) : (
+            <>
+              <p className="text-sm leading-relaxed">{aiInsights?.summary}</p>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">
+                    AI Confidence Score
+                  </span>
+                  <span className="font-medium">{aiInsights?.confidence}%</span>
+                </div>
+                <Progress value={aiInsights?.confidence} className="h-2" />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 pt-4 border-t">
+                <div className="text-center">
+                  <div className="text-lg font-medium text-green-600">
+                    {aiInsights?.action}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Recommendation
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-medium">
+                    ${aiInsights?.targetPrice}
+                  </div>
+                  <p className="text-xs text-muted-foreground">Target Price</p>
+                </div>
+                <div className="text-center">
+                  <div
+                    className={cn(
+                      "text-lg font-medium",
+                      aiInsights?.potential >= 0
+                        ? "text-green-600"
+                        : "text-orange-600"
+                    )}
+                  >
+                    {aiInsights?.potential}%
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {aiInsights?.potential >= 0 ? "Upside" : "Downside"}{" "}
+                    Potential
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
         </CardContent>
       </Card>
 
@@ -59,61 +211,49 @@ export function OverviewTab({ stock }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">1 Day</span>
-                  <span className={`font-medium ${stock.dailyChangePercent >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {stock.dailyChangePercent >= 0 ? '+' : ''}{stock.dailyChangePercent.toFixed(2)}%
-                  </span>
-                </div>
-                <Progress 
-                  value={Math.abs(stock.dailyChangePercent) * 10} 
-                  className="h-1"
-                />
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">1 Week</span>
-                  <span className="font-medium text-green-600">+3.2%</span>
-                </div>
-                <Progress value={32} className="h-1" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">1 Month</span>
-                  <span className="font-medium text-green-600">+7.8%</span>
-                </div>
-                <Progress value={78} className="h-1" />
-              </div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-muted-foreground">1 Day</span>
+              <span
+                className={`font-medium ${
+                  snapshots.dayChange >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {snapshots.dayChange >= 0 ? "+" : ""}
+                {snapshots.dayChange}%
+              </span>
             </div>
-            
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">3 Months</span>
-                  <span className="font-medium text-green-600">+12.4%</span>
-                </div>
-                <Progress value={62} className="h-1" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">6 Months</span>
-                  <span className="font-medium text-green-600">+18.7%</span>
-                </div>
-                <Progress value={93} className="h-1" />
-              </div>
-              
-              <div>
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-muted-foreground">1 Year</span>
-                  <span className="font-medium text-green-600">+25.3%</span>
-                </div>
-                <Progress value={84} className="h-1" />
-              </div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-muted-foreground">1 Week</span>
+              <span
+                className={`font-medium ${
+                  snapshots.weekChange >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {snapshots.weekChange >= 0 ? "+" : ""}
+                {snapshots.weekChange}%
+              </span>
+            </div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-muted-foreground">1 Month</span>
+              <span
+                className={`font-medium ${
+                  snapshots.monthChange >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {snapshots.monthChange >= 0 ? "+" : ""}
+                {snapshots.monthChange}%
+              </span>
+            </div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-muted-foreground">1 Quarter</span>
+              <span
+                className={`font-medium ${
+                  snapshots.qtyChange >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {snapshots.qtyChange >= 0 ? "+" : ""}
+                {snapshots.qtyChange}%
+              </span>
             </div>
           </div>
         </CardContent>
@@ -132,29 +272,34 @@ export function OverviewTab({ stock }) {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">RSI (14)</span>
-                <span className="text-sm font-medium">58.2</span>
+                <span className="text-sm font-medium">{indicators.rsi}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">MACD</span>
-                <span className="text-sm font-medium text-green-600">Bullish</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Volume Ratio</span>
-                <span className="text-sm font-medium">1.24x</span>
+                <span
+                  className={cn(
+                    "text-sm font-medium",
+                    indicators.macd === "NEUTRAL" && "text-gray-600",
+                    indicators.macd === "BULLISH" && "text-green-600",
+                    indicators.macd === "BEARISH" && "text-orange-600"
+                  )}
+                >
+                  {indicators.macd}
+                </span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Beta</span>
-                <span className="text-sm font-medium">0.87</span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">52W High</span>
-                <span className="text-sm font-medium">PKR 295</span>
+                <span className="text-sm font-medium">
+                  ${indicators.fiftyTwoWeekHigh}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">52W Low</span>
-                <span className="text-sm font-medium">PKR 180</span>
+                <span className="text-sm font-medium">
+                  ${indicators.fiftyTwoWeekLow}
+                </span>
               </div>
             </div>
           </div>
