@@ -398,7 +398,7 @@ export default function GoalPlanningModule() {
       {!isFetchingGoals && goals.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {goals.map((goal) => {
-            const progress = (goal.current / goal.target) * 100;
+            const progress = (goal.currentAmount / goal.targetAmount) * 100;
             return (
               <Card key={goal.id} className="border border-gray-200">
                 <CardHeader>

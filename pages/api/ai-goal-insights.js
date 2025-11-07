@@ -29,8 +29,16 @@ export default async function handler(req, res) {
       0
     );
 
-    const months_remaining =
-      new Date(req.body.deadline).getMonth() - new Date().getMonth();
+    // Calculate months_remaining correctly (accounting for year and month)
+    const today = new Date();
+    const deadline = new Date(req.body.deadline);
+    let months_remaining =
+      (deadline.getFullYear() - today.getFullYear()) * 12 +
+      (deadline.getMonth() - today.getMonth());
+    // Optionally, count +1 if the deadline day is same or later in month
+    if (deadline.getDate() >= today.getDate()) {
+      months_remaining += 1;
+    }
 
     const expense_ratio = userPreferences.monthlyFixedExpenses / totalIncome;
     const savings_rate = userPreferences.savingsGoal / totalIncome;
