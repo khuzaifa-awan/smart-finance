@@ -21,30 +21,27 @@ export default async function handler(req, res) {
       const macdUrl = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/indicators/macd?symbol=${ticker}&interval=1mo&series_type=close&fast_period=12&slow_period=26&signal_period=9&limit=1`;
       const fiftyTwoWeek = `https://yahoo-finance15.p.rapidapi.com/api/v1/markets/stock/quotes?ticker=${ticker}`;
 
-      const [rsiResponse, macdResponse, fiftyTwoWeekResponse] =
-        await Promise.all([
-          fetch(rsi, {
-            method: "GET",
-            headers: {
-              "x-rapidapi-key": api,
-              "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-            },
-          }),
-          fetch(macdUrl, {
-            method: "GET",
-            headers: {
-              "x-rapidapi-key": api,
-              "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-            },
-          }),
-          fetch(fiftyTwoWeek, {
-            method: "GET",
-            headers: {
-              "x-rapidapi-key": api,
-              "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-            },
-          }),
-        ]);
+      const rsiResponse = await fetch(rsi, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
+      const macdResponse = await fetch(macdUrl, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
+      const fiftyTwoWeekResponse = await fetch(fiftyTwoWeek, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
 
       const { RSI } = (await rsiResponse.json()).body[0];
       const { MACD: macd, MACD_Signal: signal } = (await macdResponse.json())

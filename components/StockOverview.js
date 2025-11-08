@@ -2,33 +2,20 @@ import { TrendingUp, TrendingDown, Users, Building2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Progress } from "./ui/progress";
-import { useEffect, useState } from "react";
 
-export function StockOverview({ stock }) {
-  const [stockData, setStockData] = useState(null);
+export function StockOverview({ stock, loading, error }) {
+  const stockData = stock;
   const isPositive = stockData?.dailyChange >= 0;
 
-  useEffect(() => {
-    const fetchStockData = async () => {
-      try {
-        const response = await fetch(
-          `/api/stocks/profile?ticker=${stock.symbol}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch stock profile");
-        }
-
-        const { data } = await response.json();
-        setStockData(data);
-      } catch (error) {
-        console.error("Error fetching stock profile:", error);
-      }
-    };
-
-    fetchStockData();
-  }, [stock]);
+  if (loading) {
+    return <div className="p-4 text-center">Loading...</div>;
+  }
+  if (error) {
+    return <div className="p-4 text-center text-red-600">Error: {error}</div>;
+  }
+  if (!stockData) {
+    return <div className="p-4 text-center">No data to display.</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -57,7 +44,7 @@ export function StockOverview({ stock }) {
           <div className="flex items-center justify-between">
             <div>
               <div className="text-3xl font-medium">
-                ${stockData?.currentPrice.toFixed(2)}
+                ${stockData?.currentPrice?.toFixed(2)}
               </div>
               <div
                 className={`flex items-center space-x-1 text-sm ${
@@ -71,11 +58,11 @@ export function StockOverview({ stock }) {
                 )}
                 <span>
                   {isPositive ? "+" : ""}
-                  {stockData?.dailyChange.toFixed(2)}
+                  {stockData?.dailyChange?.toFixed(2)}
                 </span>
                 <span>
                   ({isPositive ? "+" : ""}
-                  {stockData?.dailyChangePercent.toFixed(2)}%)
+                  {stockData?.dailyChangePercent?.toFixed(2)}%)
                 </span>
               </div>
             </div>
@@ -137,7 +124,7 @@ export function StockOverview({ stock }) {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">P/E Ratio</span>
                   <span className="font-medium">
-                    {stockData?.pe.toFixed(2)}
+                    {stockData?.pe?.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -146,7 +133,7 @@ export function StockOverview({ stock }) {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">EPS</span>
                   <span className="font-medium">
-                    {stockData?.eps.toFixed(2)}
+                    {stockData?.eps?.toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -155,7 +142,7 @@ export function StockOverview({ stock }) {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Dividend Yield</span>
                   <span className="font-medium">
-                    {stockData?.dividendYield.toFixed(2)}%
+                    {stockData?.dividendYield?.toFixed(2)}%
                   </span>
                 </div>
               </div>

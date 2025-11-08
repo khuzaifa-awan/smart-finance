@@ -36,6 +36,8 @@ export default async function handler(req, res) {
         },
       });
 
+      // console.log(await overviewResponse.json());
+
       const {
         sector,
         longBusinessSummary: description,

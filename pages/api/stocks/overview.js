@@ -22,41 +22,34 @@ export default async function handler(req, res) {
       const oneMonth = `https://yahoo-finance15.p.rapidapi.com/api/v2/markets/stock/history?symbol=${ticker}&interval=1mo&limit=1`;
       const oneQty = `https://yahoo-finance15.p.rapidapi.com/api/v2/markets/stock/history?symbol=${ticker}&interval=1qty&limit=1`;
 
-      const [
-        oneDayResponse,
-        oneWeekResponse,
-        oneMonthResponse,
-        oneQtyResponse,
-      ] = await Promise.all([
-        fetch(oneDay, {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key": api,
-            "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-          },
-        }),
-        fetch(oneWeek, {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key": api,
-            "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-          },
-        }),
-        fetch(oneMonth, {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key": api,
-            "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-          },
-        }),
-        fetch(oneQty, {
-          method: "GET",
-          headers: {
-            "x-rapidapi-key": api,
-            "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
-          },
-        }),
-      ]);
+      const oneDayResponse = await fetch(oneDay, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
+      const oneWeekResponse = await fetch(oneWeek, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
+      const oneMonthResponse = await fetch(oneMonth, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
+      const oneQtyResponse = await fetch(oneQty, {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": api,
+          "x-rapidapi-host": "yahoo-finance15.p.rapidapi.com",
+        },
+      });
 
       const { open: openDay, close: closeDay } = (await oneDayResponse.json())
         .body[0];

@@ -163,13 +163,13 @@ export function ValuationTab({ stock }) {
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-medium">
-                  PKR {fairValue?.toFixed(0)}
+                  ${fairValue?.toFixed(0)}
                 </div>
                 <p className="text-sm text-muted-foreground">Fair Value</p>
               </div>
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-medium">
-                  PKR {stock.currentPrice?.toFixed(0)}
+                  ${stock.currentPrice?.toFixed(0)}
                 </div>
                 <p className="text-sm text-muted-foreground">Current Price</p>
               </div>
@@ -291,7 +291,7 @@ export function ValuationTab({ stock }) {
           <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-lg">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-2xl font-medium">PKR 280</div>
+                <div className="text-2xl font-medium">$280</div>
                 <p className="text-sm text-muted-foreground">
                   AI Consensus Fair Value
                 </p>
@@ -301,7 +301,7 @@ export function ValuationTab({ stock }) {
                   21% Undervalued
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  vs Current Price (PKR {stock.currentPrice})
+                  vs Current Price (${stock.currentPrice})
                 </p>
               </div>
             </div>

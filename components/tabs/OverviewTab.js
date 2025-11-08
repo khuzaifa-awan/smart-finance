@@ -3,72 +3,37 @@ import PropTypes from "prop-types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Progress } from "../ui/progress";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cn } from "../ui/utils";
 
-export function OverviewTab({ stock }) {
+export function OverviewTab({ stock, loading, error }) {
   const [aiInsights, setAiInsights] = useState(null);
   const [isLoadingInsights, setIsLoadingInsights] = useState(false);
 
-  const [snapshots, setSnapShots] = useState({
-    dayChange: 0,
-    weekChange: 0,
-    monthChange: 0,
-    qtyChange: 0,
-  });
+  if (loading) {
+    return <div className="p-4 text-center">Loading...</div>;
+  }
+  if (error) {
+    return <div className="p-4 text-center text-red-600">Error: {error}</div>;
+  }
+  if (!stock) {
+    return <div className="p-4 text-center">No data to display.</div>;
+  }
 
-  const [indicators, setIndicators] = useState({
-    rsi: 0,
-    macd: "NEUTRAL",
-    fiftyTwoWeekLow: 0,
-    fiftyTwoWeekHigh: 0,
-  });
+  // Overwrite naming for old 'snapshots' and 'indicators' to match prop for UI to work
+  const snapshots = {
+    dayChange: stock.dayChange,
+    weekChange: stock.weekChange,
+    monthChange: stock.monthChange,
+    qtyChange: stock.qtyChange,
+  };
 
-  useEffect(() => {
-    setAiInsights(null);
-  }, [stock]);
-
-  useEffect(() => {
-    const fetchStockSnapshots = async () => {
-      try {
-        const response = await fetch(
-          `/api/stocks/overview?ticker=${stock.symbol}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch stock snapshots");
-        }
-
-        const { data } = await response.json();
-        setSnapShots(data);
-      } catch (error) {
-        console.error("Error fetching stock snapshots:", error);
-      }
-    };
-
-    fetchStockSnapshots();
-  }, [stock]);
-
-  useEffect(() => {
-    const fetchStockIndicators = async () => {
-      try {
-        const response = await fetch(
-          `/api/stocks/indicators?ticker=${stock.symbol}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch stock indicators");
-        }
-
-        const { data } = await response.json();
-        setIndicators(data);
-      } catch (error) {
-        console.error("Error fetching stock indicators:", error);
-      }
-    };
-
-    fetchStockIndicators();
-  }, [stock]);
+  const indicators = {
+    rsi: stock.rsi,
+    macd: stock.macd,
+    fiftyTwoWeekLow: stock.fiftyTwoWeekLow,
+    fiftyTwoWeekHigh: stock.fiftyTwoWeekHigh,
+  };
 
   const generateAiInsights = async () => {
     setIsLoadingInsights(true);
@@ -153,7 +118,6 @@ export function OverviewTab({ stock }) {
           ) : (
             <>
               <p className="text-sm leading-relaxed">{aiInsights?.summary}</p>
-
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">
@@ -163,7 +127,6 @@ export function OverviewTab({ stock }) {
                 </div>
                 <Progress value={aiInsights?.confidence} className="h-2" />
               </div>
-
               <div className="grid grid-cols-3 gap-4 pt-4 border-t">
                 <div className="text-center">
                   <div className="text-lg font-medium text-green-600">
