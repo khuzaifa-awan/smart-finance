@@ -268,7 +268,7 @@ export default function GoalPlanningModule() {
                   <span className="text-sm font-medium">Achievability</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">
-                  {aiInsights.achievability}%
+                  {aiInsights.achievability.toFixed(2)}%
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
                   {aiInsights.achievability >= 70
@@ -285,7 +285,7 @@ export default function GoalPlanningModule() {
                   <span className="text-sm font-medium">Monthly Target</span>
                 </div>
                 <p className="text-2xl font-bold text-gray-900">
-                  ${aiInsights.monthlySavingsTarget}
+                  ${aiInsights.monthlySavingsTarget.toFixed(2)}
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
                   Required monthly savings
