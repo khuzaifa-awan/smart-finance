@@ -23,6 +23,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/ui/utils.js", "components/ui/use-mobile.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "components/ui/utils.js",
+    "components/ui/use-mobile.js",
+    "src/app/layout.ks"
+  ],
   "exclude": ["node_modules"]
 }
