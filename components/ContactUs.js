@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function ContactUs() {
   const [email, setEmail] = useState("");
@@ -79,10 +80,12 @@ export default function ContactUs() {
           viewport={{ once: true }}
           className="md:w-1/2 mt-12 md:mt-0 flex justify-center"
         >
-          <img
+          <Image
             src="/contact.png"
             alt="Contact us"
-            className="rounded-xl shadow-lg w-96 h-auto object-cover"
+            width={384}
+            height={384}
+            className="rounded-xl shadow-lg object-cover"
           />
         </motion.div>
       </div>

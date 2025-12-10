@@ -2,11 +2,8 @@
 import clientPromise from "@/utils/mongodb";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { signOut } from "next-auth/react";
-import Link from "next/link";
 import BudgetAlertButton from "../components/BudgetAlertButton";
 import FinancialCharts from "../components/FinancialCharts";
-import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 
 // Add this function before getServerSideProps
@@ -39,7 +36,7 @@ function processTimelineData(expenses) {
       const yearKey = date.getFullYear().toString();
       yearData[yearKey] = (yearData[yearKey] || 0) + expense.amount;
     } catch (error) {
-      console.error("Error processing expense:", expense);
+      console.error("Error processing expense:", error);
       return; // Skip this expense if there's an error
     }
   });
@@ -83,11 +80,6 @@ export async function getServerSideProps(context) {
     .toArray();
 
   // console.log("All budget limits:", budgetLimits);
-
-  // Filter after fetching
-  const filteredBudgetLimits = budgetLimits.filter((limit) =>
-    limit.userId.toString().includes(userId.toString())
-  );
 
   // console.log("Filtered budget limits:", filteredBudgetLimits);
   // console.log("Raw userId from session:", userId);
@@ -223,7 +215,6 @@ export default function HomePage({
   categorizedExpenses, // Change from expenseData
   expenseTimeline,
   exceededLimits,
-  session,
 }) {
   // Transform categorized data into the format expected by FinancialCharts
   const incomeData = {};

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Dancing_Script } from "next/font/google";
+import Image from "next/image";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
@@ -14,10 +15,13 @@ const Navbar = ({ onLoginClick }) => {
         <div className="flex justify-between items-center h-16">
           {/* Left: Logo and Brand Name */}
           <div className="flex items-center space-x-3">
-            <img
+            <Image
               src="/logo.jpg"
-              alt="Logo"
-              className="h-10 w-10 rounded-full object-cover"
+              alt="Smart Finance Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-full object-cover"
+              priority
             />
             <span
               className={`text-4xl font-bold italic text-white drop-shadow-md ${dancingScript.className}`}

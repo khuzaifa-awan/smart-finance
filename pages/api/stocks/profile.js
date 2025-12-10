@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   }
 
   await dbConnect();
-  const userId = session.user.id;
   const api = process.env.RAPID_API_KEY;
 
   if (req.method === "GET") {

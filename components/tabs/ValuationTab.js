@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 
 export function ValuationTab({ stock }) {

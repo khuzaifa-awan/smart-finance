@@ -7,7 +7,7 @@ import {
 import PropTypes from "prop-types";
 
 import { cn } from "./utils";
-import { Button, buttonVariants } from "./button";
+import { buttonVariants } from "./button";
 
 function Pagination({ className, ...props }) {
   return (
@@ -54,7 +54,7 @@ function PaginationLink({ className, isActive, size = "icon", ...props }) {
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        className,
+        className
       )}
       {...props}
     />

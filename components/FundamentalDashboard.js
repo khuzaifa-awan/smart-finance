@@ -1,5 +1,11 @@
 import { Card } from "./ui/card";
-import { TrendingUp, TrendingDown, DollarSign, PieChart, BarChart3 } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  PieChart,
+  BarChart3,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -7,14 +13,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { PieChart as RechartsPie, Pie, Cell, ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import {
+  PieChart as RechartsPie,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 
 // Mock portfolio data
 const portfolioData = {
-  totalValue: 125000.00,
-  totalGain: 8500.00,
+  totalValue: 125000.0,
+  totalGain: 8500.0,
   gainPercent: 7.29,
-  totalInvested: 116500.00,
+  totalInvested: 116500.0,
 };
 
 // Mock holdings distribution
@@ -53,10 +70,10 @@ const topPerformers = [
 
 // Mock watchlist
 const watchlist = [
-  { symbol: "OGDC", price: 145.20, change: 2.3 },
-  { symbol: "PPL", price: 82.50, change: -1.2 },
-  { symbol: "MARI", price: 1580.00, change: 0.8 },
-  { symbol: "MCB", price: 205.30, change: 1.5 },
+  { symbol: "OGDC", price: 145.2, change: 2.3 },
+  { symbol: "PPL", price: 82.5, change: -1.2 },
+  { symbol: "MARI", price: 1580.0, change: 0.8 },
+  { symbol: "MCB", price: 205.3, change: 1.5 },
 ];
 
 export function FundamentalDashboard() {
@@ -70,7 +87,9 @@ export function FundamentalDashboard() {
           <Card className="p-6 border-t-4 border-t-green-500">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-muted-foreground text-sm mb-2">Total Portfolio Value</p>
+                <p className="text-muted-foreground text-sm mb-2">
+                  Total Portfolio Value
+                </p>
                 <p className="text-3xl text-green-600 mb-1">
                   ${portfolioData.totalValue.toLocaleString()}
                 </p>
@@ -88,7 +107,9 @@ export function FundamentalDashboard() {
           <Card className="p-6 border-t-4 border-t-blue-500">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-muted-foreground text-sm mb-2">Total Gain/Loss</p>
+                <p className="text-muted-foreground text-sm mb-2">
+                  Total Gain/Loss
+                </p>
                 <p className="text-3xl text-blue-600 mb-1">
                   ${portfolioData.totalGain.toLocaleString()}
                 </p>
@@ -106,7 +127,9 @@ export function FundamentalDashboard() {
           <Card className="p-6 border-t-4 border-t-purple-500">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-muted-foreground text-sm mb-2">Total Invested</p>
+                <p className="text-muted-foreground text-sm mb-2">
+                  Total Invested
+                </p>
                 <p className="text-3xl text-purple-600 mb-1">
                   ${portfolioData.totalInvested.toLocaleString()}
                 </p>
@@ -158,7 +181,9 @@ export function FundamentalDashboard() {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-sm text-muted-foreground">{item.name}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {item.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -196,7 +221,9 @@ export function FundamentalDashboard() {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-sm text-muted-foreground">{item.name}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {item.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -233,7 +260,10 @@ export function FundamentalDashboard() {
                     tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                   />
                   <Tooltip
-                    formatter={(value) => [`$${value.toLocaleString()}`, "Value"]}
+                    formatter={(value) => [
+                      `$${value.toLocaleString()}`,
+                      "Value",
+                    ]}
                   />
                   <Line
                     type="monotone"
@@ -255,7 +285,10 @@ export function FundamentalDashboard() {
             <h3 className="text-base mb-4">Top Performers</h3>
             <div className="space-y-3">
               {topPerformers.map((stock, index) => (
-                <div key={stock.symbol} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                <div
+                  key={stock.symbol}
+                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
                       <span className="text-sm text-blue-600">{index + 1}</span>
@@ -281,20 +314,30 @@ export function FundamentalDashboard() {
             <h3 className="text-base mb-4">Watchlist</h3>
             <div className="space-y-3">
               {watchlist.map((stock) => (
-                <div key={stock.symbol} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                <div
+                  key={stock.symbol}
+                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                >
                   <div>
                     <p className="font-medium">{stock.symbol}</p>
                     <p className="text-sm text-muted-foreground">
                       ${stock.price.toLocaleString()}
                     </p>
                   </div>
-                  <div className={`flex items-center gap-1 ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                  <div
+                    className={`flex items-center gap-1 ${
+                      stock.change >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
                     {stock.change >= 0 ? (
                       <TrendingUp className="w-4 h-4" />
                     ) : (
                       <TrendingDown className="w-4 h-4" />
                     )}
-                    <span>{stock.change >= 0 ? '+' : ''}{stock.change}%</span>
+                    <span>
+                      {stock.change >= 0 ? "+" : ""}
+                      {stock.change}%
+                    </span>
                   </div>
                 </div>
               ))}

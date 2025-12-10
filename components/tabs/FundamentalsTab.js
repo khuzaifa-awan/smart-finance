@@ -95,7 +95,7 @@ export function FundamentalsTab({ stock }) {
     fetchStockCashflow();
   }, [stock]);
 
-  const renderFinancialTable = (data, title) => (
+  const renderFinancialTable = (data) => (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>

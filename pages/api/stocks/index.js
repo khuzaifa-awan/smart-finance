@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import dbConnect from "@/utils/mongoose";
-import { formatNumber } from "../../../components/ui/utils";
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
@@ -11,7 +10,6 @@ export default async function handler(req, res) {
   }
 
   await dbConnect();
-  const userId = session.user.id;
   const api = process.env.RAPID_API_KEY;
 
   if (req.method === "GET") {

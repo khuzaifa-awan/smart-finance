@@ -2,8 +2,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -14,9 +12,61 @@ export default function Signup() {
   });
   const router = useRouter();
 
+  const validateForm = () => {
+    // Username validation
+    if (!form.username || form.username.trim().length < 3) {
+      alert("Username must be at least 3 characters long");
+      return false;
+    }
+    if (!/^[a-zA-Z0-9_-]+$/.test(form.username)) {
+      alert(
+        "Username can only contain letters, numbers, underscores, and hyphens"
+      );
+      return false;
+    }
+
+    // Email validation
+    if (!form.email || form.email.trim().length === 0) {
+      alert("Email is required");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email)) {
+      alert("Please enter a valid email address");
+      return false;
+    }
+
+    // Password validation
+    if (!form.password || form.password.length < 6) {
+      alert("Password must be at least 6 characters long");
+      return false;
+    }
+    if (!/(?=.*[a-z])/.test(form.password)) {
+      alert("Password must contain at least one lowercase letter");
+      return false;
+    }
+    if (!/(?=.*[A-Z])/.test(form.password)) {
+      alert("Password must contain at least one uppercase letter");
+      return false;
+    }
+    if (!/(?=.*\d)/.test(form.password)) {
+      alert("Password must contain at least one number");
+      return false;
+    }
+
+    // Confirm password validation
+    if (form.password !== form.confirm) {
+      alert("Passwords do not match");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password !== form.confirm) return alert("Passwords do not match");
+
+    if (!validateForm()) return;
 
     try {
       await axios.post("/api/auth/signup", form);

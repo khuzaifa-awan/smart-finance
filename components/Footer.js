@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { FaTwitter, FaFacebookF, FaInstagram } from "react-icons/fa";
 import { Dancing_Script } from "next/font/google";
+import Image from "next/image";
 
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
@@ -14,10 +15,13 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         {/* Logo and Brand */}
         <div className="flex items-center space-x-3 mb-6 md:mb-0">
-          <img
+          <Image
             src="/logo.jpg"
             alt="Smart Finance Logo"
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full object-cover"
+            priority
           />
           <span
             className={`text-2xl font-bold italic text-white drop-shadow-md ${dancingScript.className}`}

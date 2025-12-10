@@ -55,7 +55,7 @@ export const authOptions = {
     strategy: "jwt", // force use of JWT instead of DB-stored sessions
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ url }) {
       return url; // Redirect to /home instead of base "/"
     },
 

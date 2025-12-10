@@ -23,7 +23,7 @@ export function Header({ onStockSelect }) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [stocksList, setStocksList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!searchValue.trim()) {
